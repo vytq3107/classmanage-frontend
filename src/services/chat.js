@@ -5,14 +5,17 @@ const API_URL = 'http://localhost:5003/chat'
 
 export const getUserIdFromToken = () => {
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token')
-    if (token) {
+    const cookies = document.cookie.split('; ')
+    const tokenCookie = cookies.find(cookie => cookie.startsWith('token='))
+    if (tokenCookie) {
+      const token = tokenCookie.split('=')[1]
       const decoded = jwtDecode(token)
       return decoded.userId
     }
   }
   return null
 }
+
 
 export const getStudents = async () => {
   try {
