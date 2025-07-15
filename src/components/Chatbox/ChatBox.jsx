@@ -19,12 +19,6 @@ export default function ChatBox({ selectedUser, setSelectedUser }) {
 
   const socketRef = useRef(null)
 
-  if (!senderId) {
-    return (
-      <div className="p-4 text-gray-500">Loading user information...</div>
-    )
-  }
-
   useEffect(() => {
     if (!senderId) return
 
@@ -90,6 +84,8 @@ export default function ChatBox({ selectedUser, setSelectedUser }) {
     setSelectedUser(null)
   }
 
+  const isReady = senderId && selectedUser
+
   return (
     <div className="flex-1 p-4 bg-white rounded-md shadow-lg">
       <h2 className="text-xl font-semibold mb-4">
@@ -101,7 +97,11 @@ export default function ChatBox({ selectedUser, setSelectedUser }) {
       </Button>
 
       <div className="space-y-2">
-        <ChatFeed messages={messages} showSenderName={false} />
+        {isReady ? (
+          <ChatFeed messages={messages} showSenderName={false} />
+        ) : (
+          <div className="text-gray-500">Loading chat...</div>
+        )}
       </div>
 
       <div className="mt-4">
@@ -111,7 +111,7 @@ export default function ChatBox({ selectedUser, setSelectedUser }) {
           placeholder="Type a message..."
           className="w-full"
         />
-        <Button onClick={handleSendMessage} className="mt-2 w-full">
+        <Button onClick={handleSendMessage} className="mt-2 w-full" disabled={!isReady}>
           Send
         </Button>
       </div>
