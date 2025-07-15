@@ -4,12 +4,14 @@ import React, { useState } from 'react'
 import { MessageCircle } from 'lucide-react'
 import ChatList from './ChatList'
 import ChatBox from './ChatBox'
-
+import { useChat } from '@/features/chat/useChat'
 
 export default function ChatIcon({ students }) {
   const [isChatVisible, setIsChatVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
-
+  const  { senderId } = useChat()
+  console.log("senderId", senderId);
+  
   const toggleChat = () => {
     setIsChatVisible((prev) => !prev)
   }
