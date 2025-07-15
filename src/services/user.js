@@ -1,9 +1,17 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
+
+const getToken = () => {
+  if (typeof document !== 'undefined') {
+    const cookies = document.cookie.split('; ')
+    const tokenCookie = cookies.find(cookie => cookie.startsWith('token='))
+    if (tokenCookie) {
+      return tokenCookie.split('=')[1]
+    }
+  }
+  return null
+}
 
 const API_URL = 'http://localhost:5001/user'
-
-const getToken = () => Cookies.get('token')
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -11,6 +19,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
 
 axiosInstance.interceptors.request.use((config) => {
   const token = getToken()
